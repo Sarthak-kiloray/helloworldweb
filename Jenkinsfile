@@ -20,3 +20,4 @@
   stage ('archive') {
     archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
   }
+}
