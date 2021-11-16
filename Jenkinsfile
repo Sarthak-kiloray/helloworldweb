@@ -1,19 +1,16 @@
 
-node ('buildserver') {
-
-  stage ('SCM_checkout') {
-    checkout([$class: 'GitSCM',
-        branches: [[name: '*/master']],
-        extensions: [],
-        userRemoteConfigs: [[credentialsId: 'plusforum',
-        url: 'https://github.com/ganeshhp/helloworldweb.git']]])
-  }
-
-  stage ('maven_build') {
-      sh 'mvn clean install'
-  }
-
-  input 'Proceed or Abort'
-
+node('master'){
+  stage('scm_checkout'){
+    checkout([$class: 'GitSCM', 
+        branches: [[name: '*/master']], 
+        extensions: [], 
+        userRemoteConfigs: [[url: 'https://github.com/ganeshhp/Maven-petclinic-project.git']]])
+    }
+  stage('build'){
+    sh 'mvn clean install'
+    }
+  stage('archive'){
+    archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
+   }
 }
 
